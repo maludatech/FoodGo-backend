@@ -9,6 +9,7 @@ const userSchema = new Schema(
     email: {
       type: String,
       required: [true, "Email is required"],
+      unique: [true, "Email must be unique"],
     },
     imageUrl: {
       type: String,
