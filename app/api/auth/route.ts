@@ -46,7 +46,7 @@ export const POST = async (req: Request) => {
         html: `
               <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 10px; background-color: #f9f9f9;">
                   <div style="text-align: center;">
-                      <img src="https://res.cloudinary.com/dlnvweuhv/image/upload/v1729522105/burger-solid_oa1sc9.png" alt="FoodGo Logo" style="width: 80px; height: 80px; margin-bottom: 20px;" />
+                      <img src="https://res.cloudinary.com/dlnvweuhv/image/upload/v1732232273/hamburger-burger-svgrepo-com_oevwg5.png" alt="FoodGo Logo" style="width: 80px; height: 80px; margin-bottom: 20px;" />
                   </div>
                   <h2 style="color: #333; text-align: center;">Welcome to FoodGo, ${user.fullName}!</h2>
                   <p style="color: #555; font-size: 16px;">
