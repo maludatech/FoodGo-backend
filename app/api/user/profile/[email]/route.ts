@@ -34,6 +34,7 @@ export const PATCH = async (
 ) => {
   try {
     const email = params.email;
+    const { deliveryAddress } = await req.json();
 
     await connectToDb();
 
@@ -44,7 +45,32 @@ export const PATCH = async (
         status: 404,
       });
     }
+
+    const updatedDeliveryAddress = await User.findOneAndUpdate(
+      { email: email },
+      { deliveryAddress: deliveryAddress },
+      { new: true }
+    );
+
+    if (!updatedDeliveryAddress) {
+      return new Response(
+        JSON.stringify({ message: "User details not found" }),
+        { status: 404 }
+      );
+    }
+
+    return new Response(
+      JSON.stringify({
+        message: "Delivery address updated successfully!!",
+        updatedDeliveryAddress,
+      }),
+      { status: 200 }
+    );
   } catch (error) {
-    console.error();
+    console.error("Error updating user delivery address", error);
+    return new Response(
+      JSON.stringify({ message: "Error updating user delivery address!" }),
+      { status: 500 }
+    );
   }
 };
