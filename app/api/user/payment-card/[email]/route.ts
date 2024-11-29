@@ -5,6 +5,7 @@ import Card from "@/models/Cards";
 export const GET = async ({ params }: { params: { email: string } }) => {
   try {
     const email = params.email.trim().toLowerCase();
+    console.log(email);
     await connectToDb();
     const user = await User.findOne({ email: email }).select("_id");
 
