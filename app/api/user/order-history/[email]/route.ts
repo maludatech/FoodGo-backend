@@ -73,7 +73,7 @@ export const POST = async (
       { status: 201 }
     );
   } catch (error: any) {
-    console.error("Error creating payment card", error.message);
+    console.error("Error creating transaction history", error.message);
     return new Response(
       JSON.stringify({ message: "Error creating transaction history" }),
       { status: 500 }
