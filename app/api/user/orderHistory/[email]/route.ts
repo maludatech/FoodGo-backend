@@ -4,7 +4,7 @@ import Transaction from "@/models/Transactions";
 
 export const GET = async ({ params }: { params: { email: string } }) => {
   try {
-    const email = params.email;
+    const email = params.email.trim().toLowerCase();
     await connectToDb();
     const user = await User.findOne({ email: email }).select("_id");
 
@@ -31,7 +31,7 @@ export const POST = async (
   req: Request
 ) => {
   try {
-    const email = params.email;
+    const email = params.email.trim().toLowerCase();
     const {
       name,
       imageUrl,

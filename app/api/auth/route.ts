@@ -1,5 +1,7 @@
 import { connectToDb } from "@/utils/database";
 import User from "@/models/User";
+import Card from "@/models/Cards";
+import Transaction from "@/models/Transactions";
 import nodemailer from "nodemailer";
 
 export const POST = async (req: Request) => {
@@ -25,6 +27,14 @@ export const POST = async (req: Request) => {
         email,
         fullName,
         imageUrl,
+      });
+
+      const card = await Card.create({
+        cardOwner: user._id,
+      });
+
+      const transaction = await Transaction.create({
+        buyer: user._id,
       });
 
       // Configure Nodemailer
