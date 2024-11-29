@@ -5,39 +5,49 @@ const transactionSchema = new Schema(
     buyer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      required: [true, "Buyer is required"],
     },
     name: {
       type: String,
-      default: null,
+      required: [true, "Name is required"],
+      minlength: [3, "Name must be at least 3 characters"],
     },
     imageUrl: {
       type: String,
-      default: null,
+      required: [true, "Image URL is required"],
+      validate: {
+        validator: function (v: string) {
+          return /^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/.test(v);
+        },
+        message: "Invalid image URL",
+      },
     },
     quantity: {
       type: Number,
-      default: 0,
+      required: [true, "Quantity is required"],
+      min: [1, "Quantity must be at least 1"],
     },
     price: {
       type: Number,
-      default: 0,
+      required: [true, "Price is required"],
+      min: [0, "Price must be at least 0"],
     },
     deliveryFee: {
       type: Number,
-      default: 0,
+      min: [0, "Delivery fee must be at least 0"],
     },
     tax: {
       type: Number,
-      default: 0,
+      min: [0, "Tax must be at least 0"],
     },
     total: {
       type: Number,
-      default: 0,
+      required: [true, "Total is required"],
+      min: [0, "Total must be at least 0"],
     },
     deliveryDate: {
       type: Date,
-      default: null,
+      required: [true, "Delivery date is required"],
     },
   },
   { timestamps: true }
