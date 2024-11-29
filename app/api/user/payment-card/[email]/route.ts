@@ -18,7 +18,7 @@ export const GET = async (
         status: 404,
       });
     }
-    const card = await Card.findOne({ cardOwner: user._id });
+    const card = await Card.find({ cardOwner: user._id });
     return new Response(JSON.stringify(card), { status: 200 });
   } catch (error) {
     console.error("Error fetching payment cards", error);

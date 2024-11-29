@@ -18,7 +18,7 @@ export const GET = async (
       });
     }
 
-    const transactionHistory = await Transaction.findById({ buyer: user._id });
+    const transactionHistory = await Transaction.find({ buyer: user._id });
     return new Response(JSON.stringify(transactionHistory), { status: 200 });
   } catch (error: any) {
     console.error("Error fetching user transaction history: ", error.message);
