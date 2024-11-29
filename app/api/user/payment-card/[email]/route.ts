@@ -2,7 +2,10 @@ import { connectToDb } from "@/utils/database";
 import User from "@/models/User";
 import Card from "@/models/Cards";
 
-export const GET = async ({ params }: { params: { email: string } }) => {
+export const GET = async (
+  req: Request,
+  { params }: { params: { email: string } }
+) => {
   try {
     const email = params.email.trim().toLowerCase();
     console.log(email);
@@ -27,8 +30,8 @@ export const GET = async ({ params }: { params: { email: string } }) => {
 };
 
 export const POST = async (
-  { params }: { params: { email: string } },
-  req: Request
+  req: Request,
+  { params }: { params: { email: string } }
 ) => {
   try {
     const email = params.email.trim().toLowerCase();
