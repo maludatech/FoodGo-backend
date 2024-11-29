@@ -29,14 +29,6 @@ export const POST = async (req: Request) => {
         imageUrl,
       });
 
-      const card = await Card.create({
-        cardOwner: user._id,
-      });
-
-      const transaction = await Transaction.create({
-        buyer: user._id,
-      });
-
       // Configure Nodemailer
       const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
