@@ -3,8 +3,9 @@ import mongoose, { Schema, model, models } from "mongoose";
 const transactionSchema = new Schema(
   {
     buyer: {
-      id: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     name: {
       type: String,
@@ -12,22 +13,26 @@ const transactionSchema = new Schema(
     },
     quantity: {
       type: Number,
-      default: null,
+      default: 0,
     },
     price: {
       type: Number,
-      default: null,
+      default: 0,
     },
     deliveryFee: {
       type: Number,
-      default: null,
+      default: 0,
     },
     tax: {
       type: Number,
-      default: null,
+      default: 0,
     },
     total: {
       type: Number,
+      default: 0,
+    },
+    deliveryDate: {
+      type: Date,
       default: null,
     },
   },
