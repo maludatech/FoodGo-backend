@@ -11,6 +11,10 @@ const transactionSchema = new Schema(
       type: String,
       default: null,
     },
+    imageUrl: {
+      type: String,
+      default: null,
+    },
     quantity: {
       type: Number,
       default: 0,

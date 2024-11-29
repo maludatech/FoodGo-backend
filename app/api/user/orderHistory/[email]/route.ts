@@ -34,6 +34,7 @@ export const POST = async (
     const email = params.email;
     const {
       name,
+      imageUrl,
       quantity,
       price,
       deliveryFee,
@@ -54,6 +55,7 @@ export const POST = async (
     const transaction = new Transaction({
       buyer: user._id,
       name,
+      imageUrl,
       quantity,
       price,
       deliveryFee,
