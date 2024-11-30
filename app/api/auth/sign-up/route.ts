@@ -1,15 +1,28 @@
 import { connectToDb } from "@/utils/database";
 import User from "@/models/User";
-import Card from "@/models/Cards";
-import Transaction from "@/models/Transactions";
+import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 
-export const POST = async (req: Request) => {
+export const POST = async (req: Request, res: Response) => {
   try {
-    const { fullName, email, imageUrl } = await req.json();
+    const {
+      fullName,
+      email,
+      imageUrl,
+      deliveryAddress,
+      phoneNumber,
+      password,
+    } = await req.json();
 
     // Validate input data
-    if (!fullName || !email || !imageUrl) {
+    if (
+      !fullName ||
+      !email ||
+      !imageUrl ||
+      !deliveryAddress ||
+      !phoneNumber ||
+      !password
+    ) {
       return new Response(JSON.stringify({ message: "Invalid request data" }), {
         status: 400,
       });
@@ -19,38 +32,50 @@ export const POST = async (req: Request) => {
     await connectToDb();
 
     // Check if the user already exists
-    let user = await User.findOne({ email });
+    const existingUser = await User.findOne({ email });
 
-    if (!user) {
-      // Create a new user
-      user = await User.create({
-        email,
-        fullName,
-        imageUrl,
-      });
+    if (existingUser) {
+      return new Response(
+        JSON.stringify({
+          message: "User with this email already exists, please sign in",
+        }),
+        { status: 400 }
+      );
+    }
 
-      // Configure Nodemailer
-      const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: {
-          user: process.env.GMAIL,
-          pass: process.env.PASSWORD,
-        },
-      });
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Email options
-      const mailOptions = {
-        from: "FoodGo Ltd",
-        to: user.email,
-        subject: "Welcome to FoodGo",
-        html: `
+    const newUser = await User.create({
+      fullName,
+      email,
+      imageUrl,
+      deliveryAddress,
+      phoneNumber,
+      password: hashedPassword,
+    });
+
+    // Configure Nodemailer
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.GMAIL,
+        pass: process.env.PASSWORD,
+      },
+    });
+
+    // Email options
+    const mailOptions = {
+      from: "FoodGo Ltd",
+      to: newUser.email,
+      subject: "Welcome to FoodGo",
+      html: `
               <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 10px; background-color: #f9f9f9;">
                   <div style="text-align: center;">
                       <img src="https://res.cloudinary.com/dlnvweuhv/image/upload/v1732232273/hamburger-burger-svgrepo-com_oevwg5.png" alt="FoodGo Logo" style="width: 80px; height: 80px; margin-bottom: 20px;" />
                   </div>
-                  <h2 style="color: #333; text-align: center;">Welcome to FoodGo, ${user.fullName}!</h2>
+                  <h2 style="color: #333; text-align: center;">Welcome to FoodGo, ${newUser.fullName}!</h2>
                   <p style="color: #555; font-size: 16px;">
                       We're excited to have you join the FoodGo family! Your account has been successfully created, and now you're ready to dive into the delicious world of hamburgers!!!
                   </p>
@@ -65,34 +90,19 @@ export const POST = async (req: Request) => {
                   </p>
               </div>
           `,
-      };
+    };
 
-      await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);
 
-      return new Response(
-        JSON.stringify({
-          message: "User created successfully",
-          deliveryAddress: user.deliveryAddress,
-        }),
-        { status: 201 }
-      );
-    } else {
-      // Update existing user details
-      user.fullName = fullName;
-      user.imageUrl = imageUrl;
-      await user.save();
-
-      return new Response(
-        JSON.stringify({
-          message: "User signed in successfully",
-          deliveryAddress: user.deliveryAddress,
-        }),
-        { status: 200 }
-      );
-    }
+    return new Response(
+      JSON.stringify({
+        message: "User created successfully",
+      }),
+      { status: 201 }
+    );
   } catch (error: any) {
     console.error(
-      "Error during sign-in:",
+      "Error during sign-up:",
       error.message || "Internal Server Error"
     );
     return new Response(JSON.stringify({ error: "Internal Server Error" }), {
