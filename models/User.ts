@@ -17,8 +17,15 @@ const userSchema = new Schema(
     },
     deliveryAddress: {
       type: String,
-      required: false,
-      default: null,
+      required: [true, "Delivery address is required"],
+    },
+    phoneNumber: {
+      type: String,
+      required: [true, "Phone Number is required"],
+    },
+    password: {
+      type: String,
+      required: [true, "Password is required"],
     },
   },
   { timestamps: true }
