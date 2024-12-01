@@ -4,12 +4,12 @@ import Transaction from "@/models/Transactions";
 
 export const GET = async (
   req: Request,
-  { params }: { params: { email: string } }
+  { params }: { params: { userId: string } }
 ) => {
   try {
-    const email = params.email.trim().toLowerCase();
+    const userId = params.userId;
     await connectToDb();
-    const user = await User.findOne({ email: email }).select("_id");
+    const user = await User.findById(userId);
 
     if (!user) {
       console.error("User not found");
@@ -31,10 +31,10 @@ export const GET = async (
 
 export const POST = async (
   req: Request,
-  { params }: { params: { email: string } }
+  { params }: { params: { userId: string } }
 ) => {
   try {
-    const email = params.email.trim().toLowerCase();
+    const userId = params.userId;
     const {
       name,
       imageUrl,
@@ -47,7 +47,7 @@ export const POST = async (
     }: any = await req.json();
 
     await connectToDb();
-    const user = await User.findOne({ email: email }).select("_id");
+    const user = await User.findById(userId);
 
     if (!user) {
       console.error("User not found");
