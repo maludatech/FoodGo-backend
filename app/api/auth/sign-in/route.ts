@@ -23,8 +23,6 @@ export const POST = async (req: Request, res: Response) => {
         status: 401,
       });
     }
-    // Include the createdAt field in the response
-    const registrationDate = existingUser.createdAt;
 
     const secretKey = process.env.SECRET_KEY as string;
 
@@ -42,7 +40,7 @@ export const POST = async (req: Request, res: Response) => {
       { expiresIn: "3d" }
     );
 
-    return new Response(JSON.stringify({ token, registrationDate }), {
+    return new Response(JSON.stringify({ token }), {
       status: 200,
     });
   } catch (error: any) {
