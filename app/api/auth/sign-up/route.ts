@@ -5,6 +5,7 @@ import nodemailer from "nodemailer";
 
 export const POST = async (req: Request, res: Response) => {
   try {
+    const { formData } = await req.json();
     const {
       fullName,
       email,
@@ -12,7 +13,7 @@ export const POST = async (req: Request, res: Response) => {
       deliveryAddress,
       phoneNumber,
       password,
-    } = await req.json();
+    } = formData;
 
     // Validate input data
     if (

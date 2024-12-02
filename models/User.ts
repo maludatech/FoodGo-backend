@@ -13,7 +13,8 @@ const userSchema = new Schema(
     },
     imageUrl: {
       type: String,
-      required: [true, "ImageUrl is required"],
+      required: false,
+      default: null,
     },
     deliveryAddress: {
       type: String,
