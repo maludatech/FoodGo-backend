@@ -14,6 +14,10 @@ export const POST = async (req: Request, res: Response) => {
       password,
     } = await req.json();
 
+    console.log(
+      `Data: ${fullName} ${email} ${deliveryAddress} ${phoneNumber} ${password}`
+    );
+
     // Validate input data
     if (
       !fullName ||
