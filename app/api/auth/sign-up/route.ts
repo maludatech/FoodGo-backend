@@ -5,28 +5,11 @@ import nodemailer from "nodemailer";
 
 export const POST = async (req: Request, res: Response) => {
   try {
-    const {
-      fullName,
-      email,
-      imageUrl,
-      deliveryAddress,
-      phoneNumber,
-      password,
-    } = await req.json();
-
-    console.log(
-      `Data: ${fullName} ${email} ${deliveryAddress} ${phoneNumber} ${password}`
-    );
+    const { fullName, email, deliveryAddress, phoneNumber, password } =
+      await req.json();
 
     // Validate input data
-    if (
-      !fullName ||
-      !email ||
-      !imageUrl ||
-      !deliveryAddress ||
-      !phoneNumber ||
-      !password
-    ) {
+    if (!fullName || !email || !deliveryAddress || !phoneNumber || !password) {
       return new Response(JSON.stringify({ message: "Invalid request data" }), {
         status: 400,
       });
@@ -52,7 +35,6 @@ export const POST = async (req: Request, res: Response) => {
     const newUser = await User.create({
       fullName,
       email,
-      imageUrl,
       deliveryAddress,
       phoneNumber,
       password: hashedPassword,
