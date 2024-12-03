@@ -31,10 +31,10 @@ export const POST = async (req: Request, res: Response) => {
       {
         userId: existingUser._id,
         email: existingUser.email,
-        username: existingUser.username,
         fullName: existingUser.fullName,
-        nationality: existingUser.nationality,
-        referralCode: existingUser.referralCode,
+        imageUrl: existingUser.imageUrl,
+        phoneNumber: existingUser.phoneNumber,
+        deliveryAddress: existingUser.deliveryAddress,
       },
       secretKey,
       { expiresIn: "3d" }
