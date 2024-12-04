@@ -3,7 +3,7 @@ import User from "@/models/User";
 
 export const POST = async (req: Request, res: Response) => {
   try {
-    const code = await req.json();
+    const { code } = await req.json();
 
     await connectToDb();
     const user = await User.findOne({ resetToken: code });
