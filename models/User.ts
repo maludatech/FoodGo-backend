@@ -28,6 +28,16 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required"],
     },
+    resetToken: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    resetTokenExpiry: {
+      type: Date,
+      required: false,
+      default: null,
+    },
   },
   { timestamps: true }
 );
