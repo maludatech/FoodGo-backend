@@ -76,9 +76,10 @@ export const POST = async (req: Request, res: Response) => {
       console.error("Failed to send email:", err);
       return new Response(
         JSON.stringify({
-          message: "Password updated, but email failed to send",
+          message:
+            "Password updated successfully, but we couldn't send a confirmation email. Please contact support if needed.",
         }),
-        { status: 500 }
+        { status: 200 }
       );
     }
 
