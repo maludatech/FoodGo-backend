@@ -4,8 +4,7 @@ import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 
 export const POST = async (req: Request, res: Response) => {
-  const data = await req.json();
-  const { userId, newPassword } = data;
+  const { userId, newPassword } = await req.json();
 
   try {
     await connectToDb();
@@ -38,7 +37,7 @@ export const POST = async (req: Request, res: Response) => {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
-      secure: true, // true for 465, false for other ports
+      secure: true,
       auth: {
         user: process.env.GMAIL,
         pass: process.env.PASSWORD,
