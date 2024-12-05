@@ -69,8 +69,18 @@ export const POST = async (req: Request, res: Response) => {
             `,
     };
 
-    // Send email
-    await transporter.sendMail(passwordChangeMailOptions);
+    //send email
+    try {
+      await transporter.sendMail(passwordChangeMailOptions);
+    } catch (err) {
+      console.error("Failed to send email:", err);
+      return new Response(
+        JSON.stringify({
+          message: "Password updated, but email failed to send",
+        }),
+        { status: 500 }
+      );
+    }
 
     return new Response(
       JSON.stringify({
