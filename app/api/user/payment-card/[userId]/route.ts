@@ -38,14 +38,39 @@ export const POST = async (
 
     await connectToDb();
 
+    // Validate user existence
     const user = await User.findById(userId);
-
     if (!user) {
-      console.error("User not found");
       return new Response(JSON.stringify({ message: "User not found" }), {
         status: 404,
       });
     }
+
+    // Check existing cards for the user
+    const existingCards = await Card.find({ cardOwner: user._id });
+
+    // Enforce maximum 2 cards rule
+    if (existingCards.length >= 2) {
+      return new Response(
+        JSON.stringify({ message: "You cannot have more than 2 cards." }),
+        { status: 400 }
+      );
+    }
+
+    // Enforce unique cardType rule
+    const duplicateCardType = existingCards.some(
+      (card) => card.cardType.toLowerCase() === cardType.toLowerCase()
+    );
+    if (duplicateCardType) {
+      return new Response(
+        JSON.stringify({
+          message: `You already have a ${cardType} card. Please use a different card type.`,
+        }),
+        { status: 400 }
+      );
+    }
+
+    // Create new card
     const card = new Card({
       cardOwner: user._id,
       cardNumber,
@@ -54,6 +79,7 @@ export const POST = async (
       cardType,
     });
     await card.save();
+
     return new Response(
       JSON.stringify({ message: "Card created successfully" }),
       { status: 201 }
